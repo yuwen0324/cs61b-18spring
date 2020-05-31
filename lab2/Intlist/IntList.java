@@ -79,9 +79,12 @@ public class IntList {
      * Returns a list consisting of the elements of A followed by the
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
-
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
+       if (A == null) {
+           A = B;
+           return A;
+       }
         IntList Q = A;
         while (A.rest != null) {
             A = A.rest;
@@ -89,11 +92,25 @@ public class IntList {
         A.rest = B;
         return Q;
     }
+    /** This answer cannot solve the null problem */
 
-    /**
-     * Returns a list consisting of the elements of A followed by the
-     * * elements of B.  May NOT modify items of A.  Use 'new'.
+
+    /** Try Recursive Way
+    public static IntList dcatenate(IntList A, IntList B) {
+        if (A == B) {
+            return null;
+        }
+        if (A.rest == null) {
+            A.rest = B;
+        }
+        return dcatenate(A.rest, B);
+    }
      */
+
+        /**
+         * Returns a list consisting of the elements of A followed by the
+         * * elements of B.  May NOT modify items of A.  Use 'new'.
+         */
 
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
