@@ -1,25 +1,16 @@
-public class LinkedListDeque<LochNess> {
-    private class StuffNode {
-        public StuffNode prev;
-        public LochNess item;
-        public StuffNode next;
 
-        public StuffNode(StuffNode p, LochNess i, StuffNode n) {
+public class LinkedListDeque<T> {
+    private class StuffNode {
+        private StuffNode prev;
+        private T item;
+        private StuffNode next;
+
+        private StuffNode(StuffNode p, T i, StuffNode n) {
             prev = p;
             item = i;
             next = n;
         }
     }
-/** Cannot figure out by this way
-    private class ReverseNode {
-        public LochNess reitem;
-        public ReverseNode front;
-
-        public ReverseNode(ReverseNode n, LochNess i) {
-           front = n;
-           reitem = i;
-        }
-    }*/
 
     private StuffNode sentinel;
     private int size;
@@ -31,20 +22,25 @@ public class LinkedListDeque<LochNess> {
         sentinel = new StuffNode(null, null, null);
         size = 0;
     }
-
-    public boolean isEmpty() {
-        if (sentinel.next == null) return true;
-        return false;
+    /**
+     * Creating a deep copy means that you create an entirely new LinkedListDeque,
+     * with the exact same items as other. However, they should be different objects,
+     * i.e. if you change other, the new LinkedListDeque you created should not change as well.
+     */
+    public LinkedListDeque(LinkedListDeque other) {
+        sentinel = new StuffNode(null, null, null);
+        size = 0;
+        for (int i = 0; i < other.size(); i += 1) {
+            addLast((T) other.get(i));
+        }
     }
 
-    /** Do not needed in this case
-    public LinkedListDeque(LochNess x) {
-        first = new StuffNode(x, null);
-        last = first;
-        size = 1;
-    }*/
+    public boolean isEmpty() {
+        if (sentinel.next == null) { return true; }
+        else { return false; }
+    }
 
-    public void addFirst(LochNess x) {
+    public void addFirst(T x) {
         size += 1;
         if (this.isEmpty()) {
             sentinel.next = new StuffNode(sentinel, x, sentinel.next);
@@ -59,7 +55,7 @@ public class LinkedListDeque<LochNess> {
         }
     }
 
-    public void addLast(LochNess x) {
+    public void addLast(T x) {
         size += 1;
         if (this.isEmpty()) {
             sentinel.next = new StuffNode(sentinel, x, sentinel.next);
@@ -74,43 +70,46 @@ public class LinkedListDeque<LochNess> {
     }
 
 
-    public LochNess removeFirst() {
-        size -= 1;
+    public T removeFirst() {
         StuffNode Q = first;
-        if (Q.item == null ) return null;
+        if (Q == null ) return null;
         else if (Q.next == null) {
             sentinel.next = null;
             sentinel.prev = null;
-            first = null; last = null;
+            first = null;
+            last = null;
         }
         else {
             sentinel.next = sentinel.next.next;
             first = sentinel.next;
             first.prev = sentinel;
         }
+        size -= 1;
         return Q.item;
     }
 
-
-    public LochNess removeLast() {
-        size -=1;
+    public T removeLast() {
         StuffNode Q = last;
-        if (Q.item == null ) return null;
+        if (Q == null ) return null;
         else if (Q.next == null) {
             sentinel.next = null;
             sentinel.prev = null;
-            first = null; last = null;
+            first = null;
+            last = null;
         }
         else {
           last.prev.next = null;
           last = last.prev;
           sentinel.prev = last;
         }
+        size -= 1;
         return Q.item;
     }
 
-    public LochNess get(int x) {
+    public T get(int x) {
         StuffNode Q = first;
+        if (Q == null) return null;
+        if (x >= size || x < 0) return null;
         int i = 0;
         while (i < x) {
             Q = Q.next;
@@ -119,8 +118,8 @@ public class LinkedListDeque<LochNess> {
         return Q.item;
     }
 
-    public LinkedListDeque<LochNess> Replicate() {
-        LinkedListDeque<LochNess> Q = new LinkedListDeque<>();
+    public LinkedListDeque<T> Replicate() {
+        LinkedListDeque<T> Q = new LinkedListDeque<>();
         Q.first = this.first;
         Q.last = this.last;
         Q.sentinel = this.sentinel;
@@ -128,14 +127,15 @@ public class LinkedListDeque<LochNess> {
         return Q;
     }
 
-    public LochNess getRecursive(int x) {
-        if (x == 0) return this.first.item;
-        LinkedListDeque<LochNess> Q = this.Replicate();
+    public T getRecursive(int x) {
+        if (first == null) return null;
+        if (x >= size) return null;
+        else if (x == 0) return this.first.item;
+        LinkedListDeque<T> Q = this.Replicate();
         x -= 1;
         Q.first = Q.first.next;
         return Q.getRecursive(x);
     }
-
 
     public int size() {
         return size;
@@ -143,27 +143,31 @@ public class LinkedListDeque<LochNess> {
 
     public void printDeque() {
         StuffNode Q = first;
+        if (Q == null) System.out.println("This is an empty list.");;
         while (Q != null) {
-        System.out.println(Q.item);
-        Q = Q.next;
+            if (Q.next == null) System.out.println(Q.item);
+            else System.out.print(Q.item + " ");
+            Q = Q.next;
         }
     }
-
+/** main not needed
     public static void main(String[] args) {
         LinkedListDeque<Integer> L = new LinkedListDeque<>();
-        L.isEmpty();
+       // L.isEmpty();
         L.addLast(25);
+        //L.addLast(26);
+        //L.addLast(27);
+        //L.removeFirst();
+        //System.out.println(L.removeLast());
+       // System.out.println(L.get(0));
+       // System.out.println(L.getRecursive(0));
 
-        L.removeLast();
-
-        System.out.println(L.get(2));
-        System.out.println(L.getRecursive(2));
-        System.out.println(L.size());
         L.printDeque();
+        System.out.println(L.size());
     //
      //
 
-    }
+    }*/
 
 
 }
