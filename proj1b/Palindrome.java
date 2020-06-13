@@ -2,7 +2,7 @@ public class Palindrome {
     public Deque<Character> wordToDeque(String word) {
         //Answer Source: https://stackoverflow.com/questions/5235401/split-string-into-array-of-character-strings
         char[] parts = word.toCharArray();
-        Deque<Character> L = new ArrayDeque<>();
+        Deque<Character> L = new LinkedListDeque<>();
         for (int i = 0; i < parts.length; i += 1) {
             L.addLast(parts[i]);
         }
