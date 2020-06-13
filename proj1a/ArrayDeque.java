@@ -47,7 +47,8 @@ public class ArrayDeque<T> {
         else if (nextLast < nextFirst) {
             System.arraycopy(items, 0, a, 0, nextLast);
             System.arraycopy(items,nextFirst+1, a, nextLast, size-nextLast);
-            nextFirst = nextLast - 1;
+            if (nextLast == 0) nextFirst = a.length - 1;
+            else nextFirst = nextLast - 1;
         }
         items = a;
     }
@@ -66,12 +67,8 @@ public class ArrayDeque<T> {
             this.resize(size*4);
         }
         items[nextLast] = x;
-        if (nextLast == items.length-1 && size < items.length) {
-            nextLast = 0;
-        }
-        else {
-            nextLast += 1;
-        }
+        if (nextLast == items.length-1) nextLast = 0;
+        else if (nextLast < items.length-1) nextLast += 1;
         size += 1;
     }
 
@@ -80,10 +77,8 @@ public class ArrayDeque<T> {
             this.resize(size*4);
         }
         items[nextFirst] = x;
-        if (nextFirst == 0 && size < items.length) {
-            nextFirst = items.length-1;
-        }
-        else {nextFirst -= 1;}
+        if (nextFirst == 0) nextFirst = items.length - 1;
+        else if (nextFirst > 0) nextFirst -= 1;
         size += 1;
     }
 
@@ -126,6 +121,7 @@ public class ArrayDeque<T> {
             nextLast -= 1;
             return Q;
         }
+
     }
 
     public int size() {
@@ -137,34 +133,34 @@ public class ArrayDeque<T> {
             System.out.println("This is an empty list.");
         }
         else {
-            int item = nextFirst+1;
-            while (item != nextLast) {
-                if (item == nextLast-1) {
-                    System.out.println(items[item]);
-                }
-                else {
-                    System.out.print(items[item]+" ");
-                }
-                if (item == items.length-1) {
-                    item = 0;
-                }
-                else {
-                    item += 1;
-                }
+            for (int i =0; i < size; i += 1) {
+                System.out.print(this.get(i) + " ");
             }
-            }
+            System.out.println();
         }
+    }
 
     public T get(int index) {
         if (index >= size || index < 0) {
             return null;
         }
-        else if (nextFirst+index+1 >= items.length) {
+        if (nextFirst + index + 1 >= items.length) {
             return items[nextFirst + index + 1 - items.length];
         }
         else {
             return items[nextFirst + index + 1];
         }
+    }
+
+
+    public static void main(String[] args) {
+        ArrayDeque<Integer> A = new ArrayDeque<>();
+        A.addLast(10);
+        A.addLast(20);
+        A.addLast(30);
+        A.addLast(40);
+        A.addLast(50);
+        A.addLast(10);
     }
 
 }

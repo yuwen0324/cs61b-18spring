@@ -36,14 +36,13 @@ public class LinkedListDeque<T> {
     }
 
     public boolean isEmpty() {
-        if (sentinel.next == null) { return true; }
-        else { return false; }
+        if (sentinel.next == null) return true;
+        else return false;
     }
 
     public void addFirst(T x) {
-        size += 1;
-        if (this.isEmpty()) {
-            sentinel.next = new StuffNode(sentinel, x, sentinel.next);
+        if (sentinel.next == null) {
+            sentinel.next = new StuffNode(sentinel, x, null);
             last = sentinel.next;
             first = sentinel.next;
             sentinel.prev = last;
@@ -53,12 +52,12 @@ public class LinkedListDeque<T> {
             first.prev = sentinel.next;
             first = sentinel.next;
         }
+        size += 1;
     }
 
     public void addLast(T x) {
-        size += 1;
-        if (this.isEmpty()) {
-            sentinel.next = new StuffNode(sentinel, x, sentinel.next);
+        if (sentinel.next == null) {
+            sentinel.next = new StuffNode(sentinel, x, null);
             last = sentinel.next;
             first = sentinel.next;
         }
@@ -67,8 +66,8 @@ public class LinkedListDeque<T> {
             last = last.next;
             sentinel.prev = last;
         }
+        size += 1;
     }
-
 
     public T removeFirst() {
         StuffNode Q = first;
@@ -91,17 +90,9 @@ public class LinkedListDeque<T> {
     public T removeLast() {
         StuffNode Q = last;
         if (Q == null ) return null;
-        else if (Q.next == null) {
-            sentinel.next = null;
-            sentinel.prev = null;
-            first = null;
-            last = null;
-        }
-        else {
-          last.prev.next = null;
-          last = last.prev;
-          sentinel.prev = last;
-        }
+        last.prev.next = null;
+        last = last.prev;
+        sentinel.prev = last;
         size -= 1;
         return Q.item;
     }
@@ -143,12 +134,12 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         StuffNode Q = first;
-        if (Q == null) System.out.println("This is an empty list.");;
+        if (this.isEmpty()) System.out.println("This is an empty list.");;
         while (Q != null) {
-            if (Q.next == null) System.out.println(Q.item);
-            else System.out.print(Q.item + " ");
+            System.out.print(Q.item + " ");
             Q = Q.next;
         }
+        System.out.println();
     }
 /** main not needed
     public static void main(String[] args) {
