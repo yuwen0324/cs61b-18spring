@@ -27,7 +27,7 @@ public class LinkedListDeque<T> {
      * with the exact same items as other. However, they should be different objects,
      * i.e. if you change other, the new LinkedListDeque you created should not change as well.
      */
-    public LinkedListDeque(LinkedListDeque other) {
+    private LinkedListDeque(LinkedListDeque other) {
         sentinel = new StuffNode(null, null, null);
         size = 0;
         for (int i = 0; i < other.size(); i += 1) {
@@ -36,8 +36,7 @@ public class LinkedListDeque<T> {
     }
 
     public boolean isEmpty() {
-        if (sentinel.next == null) return true;
-        else return false;
+        return sentinel.next == null;
     }
 
     public void addFirst(T x) {
@@ -46,8 +45,7 @@ public class LinkedListDeque<T> {
             last = sentinel.next;
             first = sentinel.next;
             sentinel.prev = last;
-        }
-        else {
+        } else {
             sentinel.next = new StuffNode(sentinel, x, sentinel.next);
             first.prev = sentinel.next;
             first = sentinel.next;
@@ -60,8 +58,7 @@ public class LinkedListDeque<T> {
             sentinel.next = new StuffNode(sentinel, x, null);
             last = sentinel.next;
             first = sentinel.next;
-        }
-        else {
+        } else {
             last.next = new StuffNode(last, x, null);
             last = last.next;
             sentinel.prev = last;
@@ -71,14 +68,14 @@ public class LinkedListDeque<T> {
 
     public T removeFirst() {
         StuffNode Q = first;
-        if (Q == null ) return null;
-        else if (Q.next == null) {
+        if (Q == null) {
+            return null;
+        } else if (Q.next == null) {
             sentinel.next = null;
             sentinel.prev = null;
             first = null;
             last = null;
-        }
-        else {
+        } else {
             sentinel.next = sentinel.next.next;
             first = sentinel.next;
             first.prev = sentinel;
@@ -89,18 +86,30 @@ public class LinkedListDeque<T> {
 
     public T removeLast() {
         StuffNode Q = last;
-        if (Q == null ) return null;
+        if (Q == null) {
+            return null;
+        }
         last.prev.next = null;
         last = last.prev;
         sentinel.prev = last;
         size -= 1;
+        if (size == 0) {
+            first = null;
+            last = null;
+            sentinel.next = null;
+            sentinel.prev = null;
+        }
         return Q.item;
     }
 
     public T get(int x) {
         StuffNode Q = first;
-        if (Q == null) return null;
-        if (x >= size || x < 0) return null;
+        if (Q == null) {
+            return null;
+        }
+        if (x >= size || x < 0) {
+            return null;
+        }
         int i = 0;
         while (i < x) {
             Q = Q.next;
@@ -109,7 +118,7 @@ public class LinkedListDeque<T> {
         return Q.item;
     }
 
-    public LinkedListDeque<T> Replicate() {
+    private LinkedListDeque<T> replicate() {
         LinkedListDeque<T> Q = new LinkedListDeque<>();
         Q.first = this.first;
         Q.last = this.last;
@@ -119,10 +128,15 @@ public class LinkedListDeque<T> {
     }
 
     public T getRecursive(int x) {
-        if (first == null) return null;
-        if (x >= size) return null;
-        else if (x == 0) return this.first.item;
-        LinkedListDeque<T> Q = this.Replicate();
+        if (first == null) {
+            return null;
+        }
+        if (x >= size) {
+            return null;
+        } else if (x == 0) {
+            return this.first.item;
+        }
+        LinkedListDeque<T> Q = this.replicate();
         x -= 1;
         Q.first = Q.first.next;
         return Q.getRecursive(x);
@@ -134,7 +148,9 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         StuffNode Q = first;
-        if (this.isEmpty()) System.out.println("This is an empty list.");;
+        if (this.isEmpty()) {
+            System.out.println("This is an empty list.");
+        }
         while (Q != null) {
             System.out.print(Q.item + " ");
             Q = Q.next;
